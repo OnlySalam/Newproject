@@ -1,0 +1,40 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+
+      # Add your deployment steps here, using the downloaded artifact as needed
+      - name: Stop the containers
+        run: docker stop test-calc || true
+
+      - name: Remove the container test-calc
+        run: docker rm test-calc || true
+
+      - name: Get the code from Docker Hub
+        run: docker pull monyslim/test-image:200
+
+      - name: Run the image as an app
+        run: |
+          docker run -d -p 3004:3000 --name test-calc monyslim/test-image:200
+
+      # - name: Send email notification for the latest version of the deployment
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     username: prcenturionboy@gmail.com
+      #     password: ${{ secrets.EMAIL_PASSWORD }}
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     secure: true
+      #     subject: "New Docker Container release"
+      #     to: "dewcapontaareh@gmail.com"
+      #     from: "Admin_DevOps"
+      #     body: "New Docker Container startup version: ${{ env.APP_VERSION }}"
