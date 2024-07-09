@@ -56,7 +56,7 @@ jobs:
 
       - name: "deploy helm"
         run: |
-          helm upgrade --install deployment.yaml /home/ubuntu/newproject/deployment.yaml --set image.tag=${{ env.APP_VERSION }}
+          helm upgrade --install deployment.yaml ./deployment.yaml --set image.tag=${{ env.APP_VERSION }}
 
       - name: "Test the deployment"
         run: |
