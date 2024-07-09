@@ -69,7 +69,7 @@ jobs:
 
       - name: "deploy helm"
         run: |
-          helm upgrade --install deployment.yaml mychart --set image.tag=${{ env.APP_VERSION }}
+          helm upgrade --install deployment mychart --set image.tag=${{ env.APP_VERSION }}
 
       - name: "Test the deployment"
         run: |
