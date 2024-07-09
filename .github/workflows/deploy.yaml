@@ -53,10 +53,19 @@ jobs:
         uses: azure/setup-helm@v4.2.0
         id: "install-helm"
       
-      - name: Build Helm chart
+      # - name: Build Helm chart
+      #   run: |
+      #     helm lint mychart
+      #     helm package mychart
+
+      - name: Create Helm Chart
         run: |
-          helm lint mychart
-          helm package mychart
+          helm create mychart
+
+      - name: Update Helm Chart with Image Version
+        run: |
+          sudo sed -i "s|repository:.*|repository: onlysalam/simpleproject:${{ env.APP_VERSION }}|" mychart/values.yaml
+  
 
       - name: "deploy helm"
         run: |
