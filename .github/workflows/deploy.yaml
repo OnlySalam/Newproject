@@ -21,7 +21,7 @@ jobs:
       
       - name: "Build a Docker image"
         run: | 
-          docker build -t onlysalam/simpleproject:${{ env.APP_VERSION }}
+          docker build -t onlysalam/simpleproject:${{ env.APP_VERSION }} .
 
       - name: Log into Docker Hub
         uses: docker/login-action@v3
