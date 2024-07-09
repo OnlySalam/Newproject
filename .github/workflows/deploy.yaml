@@ -53,10 +53,14 @@ jobs:
         uses: azure/setup-helm@v4.2.0
         id: "install-helm"
       
+      - name: Build Helm chart
+        run: |
+          helm lint mychart
+          helm package mychart
 
       - name: "deploy helm"
         run: |
-          helm upgrade --install deployment.yaml ./deployment.yaml --set image.tag=${{ env.APP_VERSION }}
+          helm upgrade --install deployment.yaml mychart --set image.tag=${{ env.APP_VERSION }}
 
       - name: "Test the deployment"
         run: |
