@@ -74,13 +74,16 @@ jobs:
 
       - name: Wait for deployment to be available
         run: |
-          kubectl rollout status deployment/deployment-name --timeout=600s
+          kubectl rollout status deployment/mychart --timeout=600s
   
-      - name: Port forward and test
+      - name: Get Application URL
         run: |
-          kubectl port-forward svc/deployment-name 3000:3000 &
+          export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=mychart,app.kubernetes.io/instance=mychart" -o jsonpath="{.items[0].metadata.name}")
+          export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+          echo "Visit http://127.0.0.1:3000 to use your application"
+          kubectl --namespace default port-forward $POD_NAME 3000:$CONTAINER_PORT &
           sleep 10  # Wait to ensure port forwarding is set up
-          curl localhost:3000
+          curl http://127.0.0.1:3000
 
       # - name: Build Docker image
       #   env:
