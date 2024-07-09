@@ -70,7 +70,7 @@ jobs:
 
       - name: "deploy helm"
         run: |
-          helm upgrade --install deployment/deployment mychart 
+          helm upgrade --install calculator mychart 
 
       - name: List Pods
         run: kubectl get pods
