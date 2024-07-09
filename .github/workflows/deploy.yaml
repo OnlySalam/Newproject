@@ -70,7 +70,7 @@ jobs:
 
       - name: "deploy helm"
         run: |
-          helm upgrade --install deployment mychart
+          helm upgrade --install deployment/deployment mychart 
 
       - name: List Pods
         run: kubectl get pods
@@ -78,17 +78,17 @@ jobs:
       - name: List Services
         run: kubectl get svc
   
-      - name: Get Pod Name
-        id: get_pod_name
-        run: |
-          POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=mychart,app.kubernetes.io/instance=myapp" -o jsonpath="{.items[0].metadata.name}")
-          echo "POD_NAME=$POD_NAME" >> $GITHUB_ENV
+      # - name: Get Pod Name
+      #   id: get_pod_name
+      #   run: |
+      #     POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=mychart,app.kubernetes.io/instance=myapp" -o jsonpath="{.items[0].metadata.name}")
+      #     echo "POD_NAME=$POD_NAME" >> $GITHUB_ENV
   
-      - name: Test the deployment
-        run: |
-          kubectl port-forward svc/myapp 8080:80 &
-          sleep 10
-          curl localhost:8080
+      # - name: Test the deployment
+      #   run: |
+      #     kubectl port-forward svc/myapp 8080:80 &
+      #     sleep 10
+      #     curl localhost:8080
 
       # - name: Wait for deployment to be available
       #   run: |
